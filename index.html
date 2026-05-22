@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Big Goofy Project Plus — Steal the Beans Back</title>
+<meta name="description" content="A reality-bending meme adventure. Chase Susy, battle the Glitchgang, and restore the Prime Bean before existence collapses." />
+<meta property="og:title" content="Big Goofy Project Plus" />
+<meta property="og:description" content="A reality-bending meme adventure powered by B E A N S." />
+<meta property="og:image" content="assets/hero-cover.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0414;
+    --bg-2:#140826;
+    --fg:#f5e9ff;
+    --muted:#9d8ab8;
+    --primary:#c63cff;
+    --primary-2:#ff4fd3;
+    --accent:#ff3b5c;
+    --border:rgba(198,60,255,0.25);
+    --card:rgba(20,8,38,0.6);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .display{font-family:'Bungee',cursive;letter-spacing:0.02em}
+  .pixel{font-family:'Press Start 2P',monospace}
+  .gradient-text{background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .text-glow{text-shadow:0 0 20px rgba(198,60,255,0.6),0 0 40px rgba(198,60,255,0.3)}
+  .grid-bg{
+    background-image:linear-gradient(rgba(198,60,255,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(198,60,255,0.08) 1px,transparent 1px);
+    background-size:40px 40px;
+  }
+  .scanlines{background:repeating-linear-gradient(0deg,rgba(0,0,0,0.15) 0px,rgba(0,0,0,0.15) 1px,transparent 1px,transparent 3px)}
+  .container{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+
+  /* NAV */
+  nav.top{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(20px);background:rgba(10,4,20,0.5);border-bottom:1px solid var(--border)}
+  nav.top .inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto;padding:0 1.5rem}
+  nav.top .links{display:none;gap:2rem;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.2em;font-weight:500}
+  nav.top .links a:hover{color:var(--primary)}
+  @media(min-width:768px){nav.top .links{display:flex}}
+  .btn{display:inline-block;padding:0.6rem 1rem;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;background:var(--primary);color:#fff;border-radius:4px;transition:.2s;border:none;cursor:pointer}
+  .btn:hover{background:var(--accent)}
+  .btn-lg{padding:1rem 2rem;font-size:0.85rem;position:relative;overflow:hidden;box-shadow:0 0 30px rgba(198,60,255,0.5)}
+  .btn-lg:hover{transform:scale(1.05)}
+  .btn-outline{background:transparent;border:2px solid var(--primary);color:var(--fg);padding:0.95rem 2rem}
+  .btn-outline:hover{background:rgba(198,60,255,0.2)}
+  .btn-outline.accent{border-color:var(--accent)}
+  .btn-outline.accent:hover{background:rgba(255,59,92,0.2)}
+
+  /* HERO */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:64px;text-align:center}
+  .hero .bg{position:absolute;inset:0;background-image:url('assets/hero-cover.png');background-size:cover;background-position:center;opacity:0.9;will-change:transform}
+  .hero .overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,4,20,0.3),rgba(10,4,20,0.2),var(--bg))}
+  .hero .grid-overlay{position:absolute;inset:0;opacity:0.4}
+  .hero .content{position:relative;z-index:10;padding:0 1.5rem;max-width:900px}
+  .badge{display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;margin-bottom:1.5rem;border-radius:999px;border:1px solid rgba(198,60,255,0.5);background:rgba(10,4,20,0.6);backdrop-filter:blur(8px);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.3em;animation:flicker 3s infinite}
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+  .hero img.logo{margin:0 auto;width:min(900px,90vw);filter:drop-shadow(0 0 60px rgba(198,60,255,0.7));animation:rise .8s ease-out both}
+  .hero h2{font-family:'Bungee',cursive;font-size:clamp(1.5rem,4vw,2.5rem);margin:1rem 0 1.5rem;animation:rise .8s ease-out both .15s}
+  .hero p.tag{font-family:'Press Start 2P',monospace;font-size:0.65rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;animation:rise .8s ease-out both .2s}
+  .hero .ctas{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;animation:rise .8s ease-out both .4s}
+  .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.4em;color:var(--muted);animation:pulse 2s infinite}
+
+  /* MARQUEE */
+  .marquee{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(10,4,20,0.8);padding:1.25rem 0;overflow:hidden}
+  .marquee-track{display:flex;white-space:nowrap;font-family:'Bungee',cursive;font-size:clamp(1.5rem,4vw,3rem);animation:marquee 30s linear infinite}
+  .marquee-track span{padding:0 1rem}
+  .marquee-track .star{color:var(--accent)}
+  .marquee-track .pri{color:var(--primary)}
+
+  /* SECTIONS */
+  section{padding:8rem 1.5rem;position:relative}
+  .label{font-family:'Press Start 2P',monospace;font-size:0.65rem;color:var(--primary);letter-spacing:0.5em;text-transform:uppercase;margin-bottom:1rem}
+  h2.section-title{font-family:'Bungee',cursive;font-size:clamp(2rem,5vw,4rem);margin-bottom:2.5rem;line-height:1.1}
+
+  /* STORY */
+  .story{overflow:hidden}
+  .story .bg{position:absolute;inset:0;background:url('assets/world.jpg') center/cover;opacity:0.2}
+  .story .overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg),rgba(10,4,20,0.7),var(--bg))}
+  .story .inner{position:relative;max-width:1100px;margin:0 auto}
+  .story-grid{display:grid;gap:3rem;color:var(--muted);font-size:1.05rem;line-height:1.7}
+  @media(min-width:768px){.story-grid{grid-template-columns:1fr 1fr}}
+  .story-grid strong{color:var(--fg)}
+  .story-grid .pri{color:var(--primary);font-weight:700}
+  .story-grid .acc{color:var(--accent);font-weight:700}
+  blockquote.story-quote{margin-top:4rem;border-left:4px solid var(--accent);padding:0.5rem 0 0.5rem 1.5rem}
+  blockquote.story-quote p{font-family:'Bungee',cursive;font-size:clamp(1.4rem,3vw,2.4rem)}
+  blockquote.story-quote cite{display:block;margin-top:0.5rem;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);font-style:normal}
+
+  /* CHARACTERS */
+  .chars{max-width:1300px;margin:0 auto}
+  .chars-hero{display:grid;gap:2.5rem;align-items:center;margin-bottom:3rem}
+  @media(min-width:1024px){.chars-hero{grid-template-columns:1fr 2fr}}
+  .chars-hero .img-wrap{position:relative}
+  .chars-hero .img-wrap .blur{position:absolute;inset:0;background:var(--primary);filter:blur(80px);opacity:0.5;animation:pulse-glow 3s ease-in-out infinite}
+  .chars-hero img{position:relative;max-width:420px;margin:0 auto;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(198,60,255,0.8))}
+  .chars-hero h3{font-family:'Bungee',cursive;font-size:clamp(2.5rem,6vw,5rem);margin:0.5rem 0 1rem}
+  .chars-grid{display:grid;gap:1.5rem;grid-template-columns:1fr}
+  @media(min-width:640px){.chars-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.chars-grid{grid-template-columns:repeat(4,1fr)}}
+  .card{position:relative;background:var(--card);border:1px solid var(--border);padding:1.5rem;overflow:hidden;transition:.4s;border-radius:8px}
+  .card:hover{transform:translateY(-8px);border-color:var(--primary)}
+  .card .blob{position:absolute;top:-80px;right:-80px;width:160px;height:160px;border-radius:50%;filter:blur(60px);opacity:0.4;transition:.4s}
+  .card:hover .blob{opacity:0.8}
+  .card .blob.pri{background:var(--primary)}
+  .card .blob.acc{background:var(--accent)}
+  .card .num{font-family:'Press Start 2P',monospace;font-size:0.6rem;color:var(--muted);margin-bottom:0.75rem;position:relative}
+  .card h3{font-family:'Bungee',cursive;font-size:1.5rem;margin-bottom:0.5rem;position:relative}
+  .card .role{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.2em;margin-bottom:1rem;position:relative}
+  .card .role.pri{color:var(--primary)}
+  .card .role.acc{color:var(--accent)}
+  .card p{font-size:0.9rem;color:var(--muted);position:relative}
+
+  /* MISSION */
+  .mission{overflow:hidden}
+  .mission .grid-overlay{position:absolute;inset:0;opacity:0.3}
+  .mission .inner{position:relative;max-width:1200px;margin:0 auto;display:grid;gap:4rem;align-items:center}
+  @media(min-width:1024px){.mission .inner{grid-template-columns:1fr 1fr}}
+  .mission .bean-wrap{position:relative}
+  .mission .bean-wrap img{position:relative;z-index:10;border-radius:12px;animation:float 4s ease-in-out infinite,pulse-glow 3s ease-in-out infinite}
+  .mission-list{list-style:none}
+  .mission-list li{display:flex;align-items:center;gap:1rem;padding:0.75rem 0}
+  .mission-list .num{font-family:'Press Start 2P',monospace;font-size:0.65rem;color:var(--accent);width:32px}
+  .mission-list .line{height:1px;flex:1;background:var(--border);transition:.3s}
+  .mission-list li:hover .line{background:var(--primary)}
+  .mission-list .text{font-size:1.05rem;transition:.3s}
+  .mission-list li:hover .text{color:var(--primary)}
+
+  /* DEVLOG */
+  .devlog{max-width:900px;margin:0 auto}
+  .devlog .item{display:flex;align-items:baseline;justify-content:space-between;padding:1.25rem 0;border-bottom:1px solid var(--border);transition:.3s;cursor:pointer}
+  .devlog .item:hover{border-color:var(--primary)}
+  .devlog .item .v{font-family:'Bungee',cursive;font-size:1.5rem;margin-right:1.5rem}
+  .devlog .item:hover .v{background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .devlog .item .date{font-family:'Press Start 2P',monospace;font-size:0.6rem;color:var(--muted)}
+  .devlog .item .arrow{color:var(--primary);opacity:0;transform:translateX(-10px);transition:.3s}
+  .devlog .item:hover .arrow{opacity:1;transform:translateX(0)}
+  .devlog .teaser{margin-top:3rem;padding:2rem;border:1px solid rgba(255,59,92,0.5);background:rgba(255,59,92,0.05);border-radius:8px}
+  .devlog .teaser .lbl{font-family:'Press Start 2P',monospace;font-size:0.65rem;color:var(--accent);margin-bottom:0.75rem}
+  .devlog .teaser p{font-family:'Bungee',cursive;font-size:clamp(1.25rem,3vw,1.8rem)}
+
+  /* CTA */
+  .cta{overflow:hidden;text-align:center}
+  .cta .bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(198,60,255,0.2),rgba(255,59,92,0.2))}
+  .cta .grid-overlay{position:absolute;inset:0}
+  .cta .inner{position:relative;max-width:800px;margin:0 auto}
+  .cta h2{font-family:'Bungee',cursive;font-size:clamp(3rem,8vw,6rem);line-height:1;margin-bottom:2rem}
+  .cta p{font-size:1.1rem;color:var(--muted);margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+  .cta .ctas{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:3rem 1.5rem}
+  footer .inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:1.5rem;align-items:center;justify-content:space-between}
+  @media(min-width:768px){footer .inner{flex-direction:row}}
+  footer .brand{font-family:'Bungee',cursive;font-size:1.25rem}
+  footer .brand .plus{color:var(--accent)}
+  footer .copy{font-family:'Press Start 2P',monospace;font-size:0.6rem;color:var(--muted);margin-top:0.5rem}
+  footer .links{display:flex;gap:1.5rem;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted)}
+  footer .links a:hover{color:var(--primary)}
+
+  /* glitch */
+  .glitch{position:relative;display:inline-block}
+  .glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;mix-blend-mode:screen;opacity:0.7}
+  .glitch::before{color:var(--accent);clip-path:polygon(0 0,100% 0,100% 45%,0 45%);animation:glitch-x 3s infinite}
+  .glitch::after{color:var(--primary);clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);animation:glitch-x 3s infinite .15s}
+
+  /* ANIMATIONS */
+  @keyframes glitch-x{0%,100%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+  @keyframes pulse-glow{0%,100%{filter:drop-shadow(0 0 30px rgba(198,60,255,0.6))}50%{filter:drop-shadow(0 0 60px rgba(255,59,92,0.8))}}
+  @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes flicker{0%,100%{opacity:1}45%{opacity:.85}50%{opacity:.4}55%{opacity:.95}}
+  @keyframes rise{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="inner">
+    <a href="#top"><img src="assets/logo-plus.png" alt="BGP+" style="height:36px;width:auto" /></a>
+    <div class="links">
+      <a href="#story">Story</a>
+      <a href="#characters">Characters</a>
+      <a href="#mission">Mission</a>
+      <a href="#devlog">Devlog</a>
+    </div>
+    <a href="https://romanguy-games.itch.io/big-goofy-project-plus" target="_blank" rel="noopener" class="btn">Buy $10</a>
+  </div>
+</nav>
+
+<section id="top" class="hero">
+  <div class="bg" id="heroBg"></div>
+  <div class="grid-overlay grid-bg"></div>
+  <div class="overlay"></div>
+  <div class="scanlines" style="position:absolute;inset:0;pointer-events:none"></div>
+  <div class="content">
+    <div class="badge"><span class="dot"></span>Demo V0.4A — Out Now</div>
+    <img src="assets/logo-plus.png" alt="Big Goofy Project Plus official logo" class="logo" />
+    <h2><span class="glitch" data-text="STEAL THE BEANS BACK">STEAL THE BEANS BACK</span></h2>
+    <p class="tag">THE WORLD RUNS ON BEANS. SUSY STOLE THE PRIME BEAN.<br/>REALITY IS COLLAPSING.</p>
+    <div class="ctas">
+      <a href="https://romanguy-games.itch.io/big-goofy-project-plus" target="_blank" rel="noopener" class="btn btn-lg">Get the Game</a>
+      <a href="https://www.youtube.com/watch?v=XWL31wtimvk" target="_blank" rel="noopener" class="btn btn-outline">▶ Watch Trailer</a>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ Scroll into the chaos</div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>BEANS</span><span class="star">✦</span><span class="pri">GLITCH</span><span class="star">✦</span><span>CHAOS</span><span class="star">✦</span><span class="pri">MEMES</span><span class="star">✦</span><span>GRIMACE</span><span class="star">✦</span><span class="pri">REALITY ERROR</span><span class="star">✦</span>
+    <span>BEANS</span><span class="star">✦</span><span class="pri">GLITCH</span><span class="star">✦</span><span>CHAOS</span><span class="star">✦</span><span class="pri">MEMES</span><span class="star">✦</span><span>GRIMACE</span><span class="star">✦</span><span class="pri">REALITY ERROR</span><span class="star">✦</span>
+  </div>
+</div>
+
+<section id="story" class="story">
+  <div class="bg"></div>
+  <div class="overlay"></div>
+  <div class="inner">
+    <div class="label">— Story —</div>
+    <h2 class="section-title">The world runs on <span class="gradient-text">B E A N S</span>.</h2>
+    <div class="story-grid">
+      <p>Not just food — the source of life, energy, and even the laws of physics. Protectors guard them. Scientists study them. Civilizations depend on their balance.</p>
+      <p>Then <strong>Susy</strong> stole the <span class="pri">Prime Bean</span>. Mountains flicker like broken screens. Forests forget their own shapes. People lose memories mid-sentence.</p>
+      <p>You and your best friend <span class="pri">Grimace</span>, the chaotic purple hero of questionable shape, are the only ones close enough to chase her trail.</p>
+      <p>But Susy didn't steal it for power. Someone had already tampered with it — <span class="acc">Rom</span>, a legendary world-hacker erased from history, leading the corrupted faction known as <em>"the Glitchgang"</em>.</p>
+    </div>
+    <blockquote class="story-quote">
+      <p class="text-glow">"The world deserves the truth."</p>
+      <cite>— Susy's last message</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section id="characters">
+  <div class="chars">
+    <div class="label">— The Crew & Foes —</div>
+    <h2 class="section-title">Meet the <span class="gradient-text">Chaos</span></h2>
+    <div class="chars-hero">
+      <div class="img-wrap">
+        <div class="blur"></div>
+        <img src="assets/grimace.png" alt="Grimace, the chaotic purple hero" />
+      </div>
+      <div>
+        <div class="pixel" style="font-size:0.65rem;color:var(--accent);margin-bottom:0.75rem">// PRIMARY HERO</div>
+        <h3 class="gradient-text">GRIMACE</h3>
+        <p style="font-size:1.05rem;color:var(--muted);max-width:550px;line-height:1.7">The chaotic purple hero of questionable shape. Your best friend. Unpredictable powers, infinite vibes — and the only thing standing between Rom and total reality collapse.</p>
+      </div>
+    </div>
+    <div class="chars-grid">
+      <article class="card"><div class="blob pri"></div><div class="num">01</div><h3>Grimace</h3><div class="role pri">Chaotic Purple Hero</div><p>Best friend. Questionable shape. Unpredictable powers.</p></article>
+      <article class="card"><div class="blob acc"></div><div class="num">02</div><h3>Susy</h3><div class="role acc">The Bean Thief</div><p>Stole the Prime Bean to expose the truth. Now captured.</p></article>
+      <article class="card"><div class="blob pri"></div><div class="num">03</div><h3>Brimace</h3><div class="role pri">MultiPlane Twin</div><p>Grimace's secret twin. Walks between forgotten realities.</p></article>
+      <article class="card"><div class="blob acc"></div><div class="num">04</div><h3>Rom</h3><div class="role acc">The World-Hacker</div><p>Erased from history. Wants to rewrite reality.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="mission" class="mission">
+  <div class="grid-overlay grid-bg"></div>
+  <div class="inner">
+    <div class="bean-wrap">
+      <img src="assets/bean.jpg" alt="The Prime Bean radiating cosmic energy" />
+    </div>
+    <div>
+      <div class="label">— Your Mission —</div>
+      <h2 class="section-title">Take the <span class="gradient-text">Beans</span> back.</h2>
+      <ul class="mission-list">
+        <li><span class="num">01</span><span class="line"></span><span class="text">Chase Susy through unstable regions</span></li>
+        <li><span class="num">02</span><span class="line"></span><span class="text">Solve the world's broken logic</span></li>
+        <li><span class="num">03</span><span class="line"></span><span class="text">Uncover what Rom is really planning</span></li>
+        <li><span class="num">04</span><span class="line"></span><span class="text">Team up with Grimace</span></li>
+        <li><span class="num">05</span><span class="line"></span><span class="text">Battle the Glitchgang</span></li>
+        <li><span class="num">06</span><span class="line"></span><span class="text">Confront Rom himself</span></li>
+        <li><span class="num">07</span><span class="line"></span><span class="text">Decide the fate of existence</span></li>
+      </ul>
+      <p class="pixel" style="margin-top:2.5rem;font-size:0.65rem;color:var(--muted);line-height:1.8">YOU MIGHT SAVE THE WORLD.<br/>YOU MIGHT DESTROY IT.<br/><span style="color:var(--accent)">EITHER WAY — YOU'RE TAKING THE BEANS BACK.</span></p>
+    </div>
+  </div>
+</section>
+
+<section id="devlog">
+  <div class="devlog">
+    <div class="label">— Devlog —</div>
+    <h2 class="section-title">Patch <span class="gradient-text">Notes</span></h2>
+    <a class="item" href="https://romanguy-games.itch.io/big-goofy-project-plus/devlog" target="_blank" rel="noopener"><div><span class="v">V0.4X</span><span class="date">Dec 27, 2025</span></div><span class="arrow">→</span></a>
+    <a class="item" href="https://romanguy-games.itch.io/big-goofy-project-plus/devlog" target="_blank" rel="noopener"><div><span class="v">V0.4 Info</span><span class="date">Nov 07, 2025</span></div><span class="arrow">→</span></a>
+    <a class="item" href="https://romanguy-games.itch.io/big-goofy-project-plus/devlog" target="_blank" rel="noopener"><div><span class="v">V0.4 Plans</span><span class="date">Oct 22, 2025</span></div><span class="arrow">→</span></a>
+    <a class="item" href="https://romanguy-games.itch.io/big-goofy-project-plus/devlog" target="_blank" rel="noopener"><div><span class="v">V0.3X</span><span class="date">Oct 22, 2025</span></div><span class="arrow">→</span></a>
+    <a class="item" href="https://romanguy-games.itch.io/big-goofy-project-plus/devlog" target="_blank" rel="noopener"><div><span class="v">V0.2X</span><span class="date">Oct 22, 2025</span></div><span class="arrow">→</span></a>
+    <a class="item" href="https://romanguy-games.itch.io/big-goofy-project-plus/devlog" target="_blank" rel="noopener"><div><span class="v">V0.1X</span><span class="date">Oct 22, 2025</span></div><span class="arrow">→</span></a>
+    <div class="teaser">
+      <div class="lbl">!! INCOMING !!</div>
+      <p>V0.5 will be a <span class="gradient-text">MASSIVE</span> update.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="bg"></div>
+  <div class="grid-overlay grid-bg"></div>
+  <div class="inner">
+    <h2 class="text-glow">ENTER THE<br/><span class="glitch gradient-text" data-text="GLITCHGANG">GLITCHGANG</span></h2>
+    <p>Windows demo available now on itch.io. Steam release once $100 raised. Join the Discord for chaos.</p>
+    <div class="ctas">
+      <a href="https://romanguy-games.itch.io/big-goofy-project-plus" target="_blank" rel="noopener" class="btn btn-lg">Buy on itch.io — $10</a>
+      <a href="https://discord.gg/NmzYVJKEpG" target="_blank" rel="noopener" class="btn btn-outline accent">Join Discord</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="inner">
+    <div>
+      <div class="brand">BGP<span class="plus">+</span></div>
+      <p class="copy">© RomanGuy-Games · Made with chaos</p>
+    </div>
+    <div class="links">
+      <a href="https://romanguy-games.itch.io/big-goofy-project-plus" target="_blank" rel="noopener">itch.io</a>
+      <a href="https://discord.gg/NmzYVJKEpG" target="_blank" rel="noopener">Discord</a>
+      <a href="https://www.youtube.com/watch?v=XWL31wtimvk" target="_blank" rel="noopener">YouTube</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const bg = document.getElementById('heroBg');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    bg.style.transform = `translateY(${y * 0.3}px) scale(${1 + y * 0.0005})`;
+  }, { passive: true });
+</script>
+
+</body>
+</html>
